@@ -1,0 +1,1 @@
+The three `botanical-piece-*` images were generated specifically for MOSU's website as editorial concept imagery. Existing MOSU product and founder photographs were extracted from the former single-file website and renamed for maintainability.
