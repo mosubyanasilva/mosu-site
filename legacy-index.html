@@ -985,6 +985,20 @@ if(welcomeEnter){welcomeEnter.addEventListener('click',function(){setTimeout(fun
 /* Lightweight depth on the collection cards; reduced-motion users keep a static image. */
 if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.querySelectorAll('.gc-vis').forEach(function(card){card.addEventListener('pointermove',function(e){var r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform='perspective(800px) rotateX('+(-y*3)+'deg) rotateY('+(x*3)+'deg)'});card.addEventListener('pointerleave',function(){card.style.transform=''})});}
 
+/* Bring the newer MOSU botanical work into the original immersive story. */
+var modernPieces=document.createElement('section');
+modernPieces.id='pieces';
+modernPieces.className='modern-pieces';
+modernPieces.innerHTML='<div class="modern-pieces-head"><div><p class="tag tag-dk">New botanical studies</p><h2>Pieces with<br><em>a point of view.</em></h2></div><p class="modern-pieces-intro">Singular compositions made from branches, preserved botanicals, moss and light—each one built as an object, not a conventional arrangement.</p></div><div class="modern-pieces-grid"><a class="modern-piece modern-piece-large" href="botanical-pieces.html"><img src="assets/images/botanical-piece-portrait.webp" alt="Tall sculptural botanical piece"><span>Study No. 01 · Limestone</span></a><a class="modern-piece" href="botanical-pieces.html"><img src="assets/images/botanical-bird-wide-v2.webp" alt="Botanical piece with birds of paradise"><span>Study No. 03 · Tropical line</span></a><a class="modern-piece" href="botanical-pieces.html"><img src="assets/images/botanical-orchid-wide-v2.webp" alt="Botanical piece with white orchids"><span>Study No. 05 · Orchid / Branch / Moss</span></a><a class="modern-piece modern-piece-wide" href="botanical-pieces.html"><img src="assets/images/botanical-saffron-v2.webp" alt="Botanical piece with a saffron accent"><span>Study No. 08 · Saffron gesture</span></a></div><a class="modern-pieces-link" href="botanical-pieces.html">View all botanical pieces ↗</a>';
+var meaningSection=document.querySelector('.meaning');
+if(meaningSection)meaningSection.parentNode.insertBefore(modernPieces,meaningSection);
+var modernStyle=document.createElement('style');
+modernStyle.textContent='.modern-pieces{background:#eee9de;color:#1a2218;padding:clamp(80px,10vw,150px) clamp(20px,7vw,100px);position:relative}.modern-pieces-head{max-width:1120px;margin:0 auto 56px;display:grid;grid-template-columns:1.1fr .9fr;gap:10vw;align-items:end}.modern-pieces h2{font:300 clamp(48px,6vw,86px)/.88 "Cormorant Garamond",serif;letter-spacing:-.035em}.modern-pieces h2 em{color:#5b6c48}.modern-pieces-intro{font:300 16px/1.9 "Montserrat",sans-serif;color:rgba(26,34,24,.58);max-width:390px}.modern-pieces-grid{max-width:1120px;margin:auto;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:minmax(260px,31vw);gap:14px}.modern-piece{position:relative;min-height:0;overflow:hidden;background:#d8d2c5;border:1px solid rgba(26,34,24,.14);transform:translateZ(0)}.modern-piece img{width:100%;height:100%;object-fit:contain;background:#d8d2c5;transition:transform .8s cubic-bezier(.2,.8,.2,1)}.modern-piece:hover img{transform:scale(1.035)}.modern-piece::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 58%,rgba(13,18,11,.72));pointer-events:none}.modern-piece span{position:absolute;z-index:1;bottom:20px;left:22px;color:#f0ede4;font:300 18px "Cormorant Garamond",serif}.modern-piece-large{grid-row:span 2}.modern-piece-wide{grid-column:span 2}.modern-pieces-link{display:block;width:max-content;margin:42px auto 0;color:#5b6c48;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;border-bottom:1px solid rgba(91,108,72,.35);padding-bottom:8px}@media(max-width:700px){.modern-pieces-head{grid-template-columns:1fr;gap:28px;margin-bottom:34px}.modern-pieces-grid{grid-template-columns:1fr;grid-auto-rows:72vw;gap:10px}.modern-piece-large,.modern-piece-wide{grid-column:auto;grid-row:auto}.modern-piece span{font-size:16px;bottom:15px;left:16px}.modern-pieces-link{font-size:9px}}';
+var navLinks=document.querySelector('.nav-r');
+if(navLinks&&!navLinks.querySelector('[href="#pieces"]')){var piecesNav=document.createElement('a');piecesNav.href='#pieces';piecesNav.textContent='Botanical Pieces';navLinks.insertBefore(piecesNav,navLinks.querySelector('.nav-cart'));}
+var mobileNav=document.querySelector('.nav-mobile');
+if(mobileNav&&!mobileNav.querySelector('[href="#pieces"]')){var mobilePieces=document.createElement('a');mobilePieces.href='#pieces';mobilePieces.className='nav-mob-link';mobilePieces.textContent='Botanical Pieces';mobileNav.insertBefore(mobilePieces,mobileNav.querySelector('[href="#contact"]'));mobilePieces.addEventListener('click',function(e){e.preventDefault();navToggle.classList.remove('active');navMobile.classList.remove('open');window.scrollTo({top:modernPieces.offsetTop,behavior:'smooth'});});}
+
 /* Prevent scroll while overlay is showing */
 document.body.style.overflow='hidden';
 
@@ -1215,6 +1229,31 @@ else if(ctaBtn){ctaBtn.href='mailto:studio@mosubyanasilva.com?subject=Custom%20C
 
 buildMap();
 
+/* Translate the integrated botanical studies without changing the original
+   experience structure. The section is intentionally concise in Spanish too. */
+function updateModernPiecesLang(lang){
+var section=document.getElementById('pieces');
+if(!section)return;
+var es=lang==='es';
+var tag=section.querySelector('.tag');
+var title=section.querySelector('h2');
+var intro=section.querySelector('.modern-pieces-intro');
+var link=section.querySelector('.modern-pieces-link');
+if(tag)tag.textContent=es?'Nuevos estudios botánicos':'New botanical studies';
+if(title)title.innerHTML=es?'Piezas con<br><em>carácter propio.</em>':'Pieces with<br><em>a point of view.</em>';
+if(intro)intro.textContent=es?'Composiciones singulares hechas con ramas, botánicos preservados, musgo y luz: cada pieza se construye como un objeto, no como un arreglo convencional.':'Singular compositions made from branches, preserved botanicals, moss and light—each one built as an object, not a conventional arrangement.';
+if(link)link.textContent=es?'Ver todas las piezas botánicas ↗':'View all botanical pieces ↗';
+var labels=section.querySelectorAll('.modern-piece span');
+var english=['Estudio n.º 01 · Piedra caliza','Estudio n.º 03 · Línea tropical','Estudio n.º 05 · Orquídea / Rama / Musgo','Estudio n.º 08 · Gesto azafrán'];
+var spanish=['Estudio n.º 01 · Piedra caliza','Estudio n.º 03 · Línea tropical','Estudio n.º 05 · Orquídea / Rama / Musgo','Estudio n.º 08 · Gesto azafrán'];
+labels.forEach(function(label,index){label.textContent=(es?spanish:english)[index]||label.textContent;});
+var piecesNav=document.querySelector('.nav-r a[href="#pieces"]');
+var mobilePieces=document.querySelector('.nav-mobile a[href="#pieces"]');
+if(piecesNav)piecesNav.textContent=es?'Piezas Botánicas':'Botanical Pieces';
+if(mobilePieces)mobilePieces.textContent=es?'Piezas Botánicas':'Botanical Pieces';
+}
+updateModernPiecesLang(currentLang);
+
 /* Language toggle in welcome */
 var langBtns=document.querySelectorAll('.welcome-lang button');
 langBtns.forEach(function(btn){
@@ -1222,6 +1261,7 @@ btn.addEventListener('click',function(){
 langBtns.forEach(function(b){b.classList.remove('active')});
 this.classList.add('active');
 setLang(this.getAttribute('data-lang'));
+updateModernPiecesLang(this.getAttribute('data-lang'));
 });
 });
 </script>
