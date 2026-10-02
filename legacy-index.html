@@ -969,6 +969,22 @@ document.body.style.overflow='';
 if(musicLabel)musicLabel.classList.add('hide');
 });}
 
+/* Experience selector: an editorial adaptation of the component-library pattern,
+   kept deliberately quiet so it feels like MOSU rather than a UI demo. */
+var selectedExperience='#top';
+var experiencePicker=document.createElement('div');
+experiencePicker.className='experience-picker';
+experiencePicker.innerHTML='<p class="experience-kicker">Choose your way in</p><div class="experience-options"><button type="button" data-target="#gallery"><span>01</span><strong>The Collection</strong><small>Preserved moss works and framed color.</small></button><button type="button" data-target="#about"><span>02</span><strong>The Studio</strong><small>The story, materials and point of view.</small></button></div>';
+welcomeOverlay.insertBefore(experiencePicker,welcomeEnter);
+var experienceStyle=document.createElement('style');
+experienceStyle.textContent='.experience-picker{width:min(680px,calc(100% - 38px));margin:0 auto 28px}.experience-kicker{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:rgba(240,237,228,.28);margin-bottom:14px}.experience-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}.experience-options button{appearance:none;text-align:left;min-height:118px;padding:18px 20px;background:rgba(240,237,228,.035);border:1px solid rgba(240,237,228,.11);color:var(--bone);cursor:pointer;transition:background .35s,border-color .35s,transform .35s}.experience-options button:hover,.experience-options button.selected{background:rgba(175,149,117,.1);border-color:rgba(175,149,117,.62);transform:translateY(-3px)}.experience-options span{display:block;font-size:10px;letter-spacing:.2em;color:var(--clay);margin-bottom:18px}.experience-options strong{display:block;font:400 25px/1 "Cormorant Garamond",serif}.experience-options small{display:block;margin-top:8px;font:300 12px/1.4 Montserrat,sans-serif;color:rgba(240,237,228,.48)}@media(max-width:560px){.experience-options{grid-template-columns:1fr}.experience-options button{min-height:94px}.experience-options span{margin-bottom:10px}}';
+document.head.appendChild(experienceStyle);
+experiencePicker.querySelectorAll('button').forEach(function(option){option.addEventListener('click',function(){experiencePicker.querySelectorAll('button').forEach(function(b){b.classList.remove('selected')});this.classList.add('selected');selectedExperience=this.getAttribute('data-target');if(welcomeEnter)welcomeEnter.textContent=currentLang==='es'?'Entrar a la Experiencia':'Enter the Experience';});});
+if(welcomeEnter){welcomeEnter.addEventListener('click',function(){setTimeout(function(){var target=document.querySelector(selectedExperience);if(target&&selectedExperience!=='#top')window.scrollTo({top:target.getBoundingClientRect().top+window.pageYOffset-18,behavior:'smooth'});},120);});}
+
+/* Lightweight depth on the collection cards; reduced-motion users keep a static image. */
+if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.querySelectorAll('.gc-vis').forEach(function(card){card.addEventListener('pointermove',function(e){var r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform='perspective(800px) rotateX('+(-y*3)+'deg) rotateY('+(x*3)+'deg)'});card.addEventListener('pointerleave',function(){card.style.transform=''})});}
+
 /* Prevent scroll while overlay is showing */
 document.body.style.overflow='hidden';
 
