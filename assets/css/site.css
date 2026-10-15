@@ -128,3 +128,6 @@ body{overflow-x:hidden;background:var(--night)}
 .botanical-page .botanical-card,.botanical-page .botanical-card.tall,.botanical-page .botanical-card:nth-child(3n){grid-column:auto;margin-top:0}
 .botanical-page .botanical-card img{max-height:60svh}
 }
+
+/* Blend the original light logo into dark navigation and footer surfaces. */
+.brand img,.footer-logo{mix-blend-mode:screen}
